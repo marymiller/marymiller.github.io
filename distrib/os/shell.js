@@ -49,8 +49,14 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
-            // newCommand - 
+            // Friend - 
             sc = new TSOS.ShellCommand(this.shellFriend, "friend", "<Your Name> - Displays if you're a friend.");
+            this.commandList[this.commandList.length] = sc;
+            // Date - 
+            sc = new TSOS.ShellCommand(this.shellDate, "date", " - displays current date and time");
+            this.commandList[this.commandList.length] = sc;
+            // WhereAmI - 
+            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", " - displays the users current location");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -173,6 +179,14 @@ var TSOS;
         };
         Shell.prototype.shellVer = function (args) {
             _StdOut.putText(APP_NAME + " version " + APP_VERSION);
+        };
+        Shell.prototype.shellWhereAmI = function () {
+            _StdOut.putText("Close your eyes");
+            _StdOut.advanceLine();
+            _StdOut.putText("... you can be wherever you want to be");
+        };
+        Shell.prototype.shellDate = function () {
+            _StdOut.putText(new Date().toLocaleDateString() + " at " + new Date().toLocaleTimeString());
         };
         Shell.prototype.shellFriend = function (args) {
             console.log(args[0]);

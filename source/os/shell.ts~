@@ -79,10 +79,22 @@ module TSOS {
                                   "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
 
-            // newCommand - 
+            // Friend - 
             sc = new ShellCommand(this.shellFriend,
                                   "friend",
-                                  "- Displays if you're a friend.");
+                                  "<Your Name> - Displays if you're a friend.");
+            this.commandList[this.commandList.length] = sc;
+
+            // Date - 
+            sc = new ShellCommand(this.shellDate,
+                                  "date",
+                                  " - displays current date and time");
+            this.commandList[this.commandList.length] = sc;
+
+            // WhereAmI - 
+            sc = new ShellCommand(this.shellWhereAmI,
+                                  "whereami",
+                                  " - displays the users current location");
             this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
@@ -216,9 +228,22 @@ module TSOS {
             _StdOut.putText(APP_NAME + " version " + APP_VERSION);
         }
 
+        public shellWhereAmI() {
+            _StdOut.putText("Close your eyes");
+            _StdOut.advanceLine();
+            _StdOut.putText("... you can be wherever you want to be");
+        }
+
+        public shellDate() {
+            _StdOut.putText(new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString());
+        }
+
         public shellFriend(args) {
 	    console.log(args[0]);
-	    if(args[0] == ("Alan")){ 
+	    if(args.length == 0) {
+               _StdOut.putText("Who are you?");
+	    }
+	    else if(args[0] == "Alan" || args[0] == "alan"){ 
                _StdOut.putText("Best Friends");
 	    }
 	    else{
