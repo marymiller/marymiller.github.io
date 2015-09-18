@@ -79,6 +79,12 @@ module TSOS {
                                   "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
 
+            // newCommand - 
+            sc = new ShellCommand(this.shellFriend,
+                                  "friend",
+                                  "<Your Name> - Displays if you're a friend.");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -208,6 +214,19 @@ module TSOS {
 
         public shellVer(args) {
             _StdOut.putText(APP_NAME + " version " + APP_VERSION);
+        }
+
+        public shellFriend(args) {
+	    console.log(args[0]);
+	    if(args.length == 0) {
+               _StdOut.putText("Who are you?");
+	    }
+	    else if(args[0] == "Alan" || args[0] == "alan"){ 
+               _StdOut.putText("Best Friends");
+	    }
+	    else{
+               _StdOut.putText("Nope. No new friends");
+	    }	      
         }
 
         public shellHelp(args) {
