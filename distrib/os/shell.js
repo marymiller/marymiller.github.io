@@ -58,6 +58,12 @@ var TSOS;
             // WhereAmI - 
             sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", " - displays the users current location");
             this.commandList[this.commandList.length] = sc;
+            // status -
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", " <string> - sets/updates status message");
+            this.commandList[this.commandList.length] = sc;
+            // load -
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", " - validates user code in HTML5 text area");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -180,6 +186,25 @@ var TSOS;
         Shell.prototype.shellVer = function (args) {
             _StdOut.putText(APP_NAME + " version " + APP_VERSION);
         };
+        Shell.prototype.shellLoad = function (args) {
+            var inputText = document.getElementById('taProgramInput').value;
+            inputText = inputText.toLowerCase();
+            var x = 0;
+            var valid = true;
+            while (x < inputText.length) {
+                var val = inputText.charAt(x);
+                if (val != 'a' && val != 'b' && val != 'c' && val != 'd' && val != 'e' && val != 'f' && val != '0' && val != '1' && val != '2' && val != '3' && val != '4' && val != '5' && val != '6' && val != '7' && val != '8' && val != '9' && val != ' ') {
+                    valid = false;
+                }
+                x++;
+            }
+            if (valid == true) {
+                _StdOut.putText("Input is Valid");
+            }
+            else {
+                _StdOut.putText("Input is invalid");
+            }
+        };
         Shell.prototype.shellWhereAmI = function () {
             _StdOut.putText("Close your eyes");
             _StdOut.advanceLine();
@@ -189,11 +214,11 @@ var TSOS;
             _StdOut.putText(new Date().toLocaleDateString() + " at " + new Date().toLocaleTimeString());
         };
         Shell.prototype.shellFriend = function (args) {
-            console.log(args[0]);
+            var inputText = args[0].toLowerCase();
             if (args.length == 0) {
                 _StdOut.putText("Who are you?");
             }
-            else if (args[0] == "Alan" || args[0] == "alan") {
+            else if (inputText == "alan") {
                 _StdOut.putText("Best Friends");
             }
             else {
@@ -213,6 +238,18 @@ var TSOS;
             _Kernel.krnShutdown();
             // TODO: Stop the final prompt from being displayed.  If possible.  Not a high priority.  (Damn OCD!)
         };
+        Shell.prototype.shellStatus = function (args) {
+            if (args.length != 0) {
+                console.log(args[0]);
+                var x = 0;
+                var statusString = '';
+                while (x < args.length) {
+                    statusString += (args[x] + " ");
+                    x++;
+                }
+                document.getElementById('status').value = statusString;
+            }
+        };
         Shell.prototype.shellCls = function (args) {
             _StdOut.clearScreen();
             _StdOut.resetXY();
@@ -221,10 +258,39 @@ var TSOS;
             if (args.length > 0) {
                 var topic = args[0];
                 switch (topic) {
-                    case "help":
-                        _StdOut.putText("Help displays a list of (hopefully) valid commands.");
+                    case "ver":
+                        _StdOut.putText("ver - displays the current version data.");
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "help":
+                        _StdOut.putText("help - this is the help command. seek help.");
+                        break;
+                    case "shutdown":
+                        _StdOut.putText("shutdown - Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
+                        break;
+                    case "cls":
+                        _StdOut.putText("cls - Clears the screen and resets the cursor position.");
+                        break;
+                    case "man":
+                        _StdOut.putText("man <topic> - Displays the MANual page for <topic>.");
+                        break;
+                    case "trace":
+                        _StdOut.putText("trace <on | off> - Turns the OS trace on or off.");
+                        break;
+                    case "rot13":
+                        _StdOut.putText("rot13 <string> - Does rot13 obfuscation on <string>.");
+                        break;
+                    case "prompt":
+                        _StdOut.putText("prompt <string> - Sets the prompt.");
+                        break;
+                    case "date":
+                        _StdOut.putText("date - displays the current date and time.");
+                        break;
+                    case "whereami":
+                        _StdOut.putText("whereami- displays the users current location.");
+                        break;
+                    case "friend":
+                        _StdOut.putText("<Your Name> - Displays if you're a friend.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
