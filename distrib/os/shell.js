@@ -64,6 +64,9 @@ var TSOS;
             // load -
             sc = new TSOS.ShellCommand(this.shellLoad, "load", " - validates user code in HTML5 text area");
             this.commandList[this.commandList.length] = sc;
+            // bsod -
+            sc = new TSOS.ShellCommand(this.shellBsod, "bsod", " - tests blue screen of death");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -202,7 +205,7 @@ var TSOS;
                 _StdOut.putText("Input is Valid");
             }
             else {
-                _StdOut.putText("Input is invalid");
+                _StdOut.putText("Input is Invalid");
             }
         };
         Shell.prototype.shellWhereAmI = function () {
@@ -240,7 +243,6 @@ var TSOS;
         };
         Shell.prototype.shellStatus = function (args) {
             if (args.length != 0) {
-                console.log(args[0]);
                 var x = 0;
                 var statusString = '';
                 while (x < args.length) {
@@ -253,6 +255,9 @@ var TSOS;
         Shell.prototype.shellCls = function (args) {
             _StdOut.clearScreen();
             _StdOut.resetXY();
+        };
+        Shell.prototype.shellBsod = function () {
+            _Kernel.krnTrapError("Test");
         };
         Shell.prototype.shellMan = function (args) {
             if (args.length > 0) {

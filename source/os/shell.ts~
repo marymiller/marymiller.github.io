@@ -108,6 +108,12 @@ module TSOS {
 				  "load",
 				  " - validates user code in HTML5 text area");
             this.commandList[this.commandList.length] = sc;
+
+	    // bsod -
+	    sc = new ShellCommand(this.shellBsod,
+				  "bsod",
+				  " - tests blue screen of death");
+            this.commandList[this.commandList.length] = sc;
 	    
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -247,9 +253,7 @@ module TSOS {
 	   var valid = true;
 	   while(x < inputText.length){
 	     var val = inputText.charAt(x);
-	     console.log(val);
 	     if(val != 'a' && val != 'b' && val != 'c' && val != 'd' && val != 'e' && val != 'f' && val != '0' && val != '1' && val != '2' && val != '3' && val != '4' && val != '5' && val != '6' && val != '7' && val != '8' && val != '9' && val != ' '){
-	          console.log("Inside");
 	          valid = false;
 	     }
 	     x++;
@@ -257,7 +261,7 @@ module TSOS {
 	   if(valid == true){
                _StdOut.putText("Input is Valid");      
 	   } else {
-               _StdOut.putText("Input is invalid");      
+               _StdOut.putText("Input is Invalid");
 	   }
         }
 
@@ -272,11 +276,11 @@ module TSOS {
         }
 
         public shellFriend(args) {
-	    console.log(args[0]);
+	    var inputText = args[0].toLowerCase();
 	    if(args.length == 0) {
                _StdOut.putText("Who are you?");
 	    }
-	    else if(args[0] == "Alan" || args[0] == "alan"){ 
+	    else if(inputText == "alan"){ 
                _StdOut.putText("Best Friends");
 	    }
 	    else{
@@ -301,7 +305,6 @@ module TSOS {
 	
 	public shellStatus(args){
 	    if(args.length != 0){
-	       console.log(args[0]);
 	       var x = 0;
 	       var statusString = '';
 	       while (x < args.length){
@@ -315,6 +318,10 @@ module TSOS {
         public shellCls(args) {
             _StdOut.clearScreen();
             _StdOut.resetXY();
+        }
+
+        public shellBsod() {
+	    _Kernel.krnTrapError("Test");
         }
 
         public shellMan(args) {

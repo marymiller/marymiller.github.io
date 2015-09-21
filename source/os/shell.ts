@@ -108,6 +108,12 @@ module TSOS {
 				  "load",
 				  " - validates user code in HTML5 text area");
             this.commandList[this.commandList.length] = sc;
+
+	    // bsod -
+	    sc = new ShellCommand(this.shellBsod,
+				  "bsod",
+				  " - tests blue screen of death");
+            this.commandList[this.commandList.length] = sc;
 	    
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -255,7 +261,7 @@ module TSOS {
 	   if(valid == true){
                _StdOut.putText("Input is Valid");      
 	   } else {
-               _StdOut.putText("Input is invalid");      
+               _StdOut.putText("Input is Invalid");
 	   }
         }
 
@@ -299,7 +305,6 @@ module TSOS {
 	
 	public shellStatus(args){
 	    if(args.length != 0){
-	       console.log(args[0]);
 	       var x = 0;
 	       var statusString = '';
 	       while (x < args.length){
@@ -313,6 +318,10 @@ module TSOS {
         public shellCls(args) {
             _StdOut.clearScreen();
             _StdOut.resetXY();
+        }
+
+        public shellBsod() {
+	    _Kernel.krnTrapError("Test");
         }
 
         public shellMan(args) {

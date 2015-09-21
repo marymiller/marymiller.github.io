@@ -2,9 +2,7 @@
 
 /* ------------
      Console.ts
-
      Requires globals.ts
-
      The OS Console - stdIn and stdOut by default.
      Note: This is not the Shell. The Shell is the "command line interface" (CLI) or interpreter for this console.
      ------------ */
@@ -84,8 +82,12 @@ module TSOS {
             this.currentYPosition += _DefaultFontSize + 
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
-
-            // TODO: Handle scrolling. (iProject 1)
+	    if(this.currentYPosition >= _Canvas.height){
+                var offset =_DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
+                var currentCanvas = _DrawingContext.getImageData(0,offset,_Canvas.width,_Canvas.height);
+                _DrawingContext.putImageData(currentCanvas, 0, 0);
+                this.currentYPosition = _Canvas.height - this.currentFontSize;
+            }
         }
     }
  }

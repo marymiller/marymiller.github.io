@@ -1,3 +1,4 @@
+///<reference path="../utils.ts" />
 ///<reference path="../globals.ts" />
 ///<reference path="queue.ts" />
 
@@ -174,7 +175,9 @@ module TSOS {
 
         public krnTrapError(msg) {
             Control.hostLog("OS ERROR - TRAP: " + msg);
-            // TODO: Display error on console, perhaps in some sort of colored screen. (Maybe blue?)
+            _StdOut.putText("BE WARNED.. THIS IS A WARNING -- OS ERROR");
+
+            (<HTMLInputElement> document.getElementById('divConsole')).style.background = '0000FF';
             this.krnShutdown();
         }
     }

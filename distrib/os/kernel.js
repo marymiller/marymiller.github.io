@@ -1,3 +1,4 @@
+///<reference path="../utils.ts" />
 ///<reference path="../globals.ts" />
 ///<reference path="queue.ts" />
 /* ------------
@@ -155,7 +156,8 @@ var TSOS;
         };
         Kernel.prototype.krnTrapError = function (msg) {
             TSOS.Control.hostLog("OS ERROR - TRAP: " + msg);
-            // TODO: Display error on console, perhaps in some sort of colored screen. (Maybe blue?)
+            _StdOut.putText("BE WARNED.. THIS IS A WARNING -- OS ERROR");
+            document.getElementById('divConsole').style.background = '0000FF';
             this.krnShutdown();
         };
         return Kernel;
