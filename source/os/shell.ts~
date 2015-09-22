@@ -109,6 +109,13 @@ module TSOS {
 				  " - validates user code in HTML5 text area");
             this.commandList[this.commandList.length] = sc;
 
+	    //whoamI
+	    sc = new ShellCommand(this.shellLoad,
+				  "whoami",
+				  " - validates user code in HTML5 text area");
+            this.commandList[this.commandList.length] = sc;
+
+
 	    // bsod -
 	    sc = new ShellCommand(this.shellBsod,
 				  "bsod",

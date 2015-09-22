@@ -52,10 +52,41 @@ module TSOS {
 		        this.putText(this.buffer);
 		    }
 		}else if(chr == String.fromCharCode(129)) {
-		    if(_ExecutedNum <= _ExecutedValues.length){
+		    if(_ExecutedNum < _ExecutedValues.length){
 		        this.buffer = _ExecutedValues[(_ExecutedNum)+1];
 		        _ExecutedNum = _ExecutedNum + 1;
 		        this.putText(this.buffer);
+		    }
+		} else if (chr == String.fromCharCode(9)){
+		    var foundCommand = new Array<string>();
+		    for (var x = 0; x < _OsShell.commandList.length; x++){
+         	        if (_OsShell.commandList[x].command.search(this.buffer) == 0){
+			    foundCommand.push(_OsShell.commandList[x].command);
+			    console.log(foundCommand);
+			}
+		    }
+		    if(foundCommand.length > 1){
+		        var y = 0;
+			var currentOptions = "";
+			while(y < foundCommand.length){
+			   currentOptions += (foundCommand[y] + " ");
+			   y++;
+			} 
+			this.advanceLine();
+			this.putText(currentOptions);
+			this.advanceLine();
+			_OsShell.putPrompt();
+		    }
+		    else if(foundCommand.length == 1){
+		       this.buffer = foundCommand[0];
+		       this.putText(this.buffer);
+		    }
+		    else{
+		       this.advanceLine();
+		       this.putText('No Value Found');
+		       this.advanceLine();
+		       _OsShell.putPrompt();
+		       this.putText(this.buffer);
 		    }
 		}else {
                     // This is a "normal" character, so ...

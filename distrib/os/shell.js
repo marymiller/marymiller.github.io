@@ -64,6 +64,9 @@ var TSOS;
             // load -
             sc = new TSOS.ShellCommand(this.shellLoad, "load", " - validates user code in HTML5 text area");
             this.commandList[this.commandList.length] = sc;
+            //whoamI
+            sc = new TSOS.ShellCommand(this.shellWhoAmI, "whoami", " - displays who you are.");
+            this.commandList[this.commandList.length] = sc;
             // bsod -
             sc = new TSOS.ShellCommand(this.shellBsod, "bsod", " - tests blue screen of death");
             this.commandList[this.commandList.length] = sc;
@@ -212,6 +215,9 @@ var TSOS;
             _StdOut.putText("Close your eyes");
             _StdOut.advanceLine();
             _StdOut.putText("... you can be wherever you want to be");
+        };
+        Shell.prototype.shellWhoAmI = function () {
+            _StdOut.putText("Some refer to me as God.");
         };
         Shell.prototype.shellDate = function () {
             _StdOut.putText(new Date().toLocaleDateString() + " at " + new Date().toLocaleTimeString());

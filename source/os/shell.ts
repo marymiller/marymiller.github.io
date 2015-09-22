@@ -109,6 +109,13 @@ module TSOS {
 				  " - validates user code in HTML5 text area");
             this.commandList[this.commandList.length] = sc;
 
+	    //whoamI
+	    sc = new ShellCommand(this.shellWhoAmI,
+				  "whoami",
+				  " - displays who you are.");
+            this.commandList[this.commandList.length] = sc;
+
+
 	    // bsod -
 	    sc = new ShellCommand(this.shellBsod,
 				  "bsod",
@@ -269,6 +276,10 @@ module TSOS {
             _StdOut.putText("Close your eyes");
             _StdOut.advanceLine();
             _StdOut.putText("... you can be wherever you want to be");
+        }
+
+        public shellWhoAmI() {
+            _StdOut.putText("Some refer to me as God.");
         }
 
         public shellDate() {

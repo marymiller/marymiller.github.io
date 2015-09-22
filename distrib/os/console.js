@@ -59,6 +59,39 @@ var TSOS;
                         this.putText(this.buffer);
                     }
                 }
+                else if (chr == String.fromCharCode(9)) {
+                    var foundCommand = new Array();
+                    for (var x = 0; x < _OsShell.commandList.length; x++) {
+                        if (_OsShell.commandList[x].command.search(this.buffer) == 0) {
+                            foundCommand.push(_OsShell.commandList[x].command);
+                            console.log(foundCommand);
+                        }
+                    }
+                    if (foundCommand.length > 1) {
+                        var y = 0;
+                        var currentOptions = "";
+                        while (y < foundCommand.length) {
+                            currentOptions += (foundCommand[y] + " ");
+                            y++;
+                        }
+                        this.advanceLine();
+                        this.putText(currentOptions);
+                        this.advanceLine();
+                        _OsShell.putPrompt();
+                        this.putText(this.buffer);
+                    }
+                    else if (foundCommand.length == 1) {
+                        this.buffer = foundCommand[0];
+                        this.putText(this.buffer);
+                    }
+                    else {
+                        this.advanceLine();
+                        this.putText('No Value Found');
+                        this.advanceLine();
+                        _OsShell.putPrompt();
+                        this.putText(this.buffer);
+                    }
+                }
                 else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
