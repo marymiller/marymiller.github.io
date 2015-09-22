@@ -47,13 +47,15 @@ var TSOS;
                 }
                 else if (chr == String.fromCharCode(128)) {
                     if (_ExecutedNum > 0) {
+                        this.deleteLine(); //Clears the line
                         this.buffer = _ExecutedValues[(_ExecutedNum - 1)];
                         _ExecutedNum = _ExecutedNum - 1;
-                        this.putText(this.buffer);
+                        this.putText(this.buffer); //Puts next value
                     }
                 }
                 else if (chr == String.fromCharCode(129)) {
                     if (_ExecutedNum < _ExecutedValues.length) {
+                        this.deleteLine();
                         this.buffer = _ExecutedValues[(_ExecutedNum) + 1];
                         _ExecutedNum = _ExecutedNum + 1;
                         this.putText(this.buffer);
@@ -81,6 +83,7 @@ var TSOS;
                         this.putText(this.buffer);
                     }
                     else if (foundCommand.length == 1) {
+                        this.deleteLine();
                         this.buffer = foundCommand[0];
                         this.putText(this.buffer);
                     }
@@ -92,6 +95,9 @@ var TSOS;
                         this.putText(this.buffer);
                     }
                 }
+                else if (chr == String.fromCharCode(8)) {
+                    this.deleteChar();
+                }
                 else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -100,6 +106,31 @@ var TSOS;
                     this.buffer += chr;
                 }
             }
+        };
+        Console.prototype.deleteLine = function () {
+            var currentLength = this.buffer.length;
+            var x = 0;
+            while (x < currentLength) {
+                this.deleteChar();
+                x++;
+            }
+        };
+        Console.prototype.deleteChar = function () {
+            var nb = "";
+            var buf = _Console.buffer;
+            var toDelChar = buf[buf.length - 1];
+            var offset = _DefaultFontSize + _FontHeightMargin + 3;
+            var xVal = _Console.currentXPosition;
+            var charWidth = (TSOS.CanvasTextFunctions.measure(_DefaultFontFamily, _DefaultFontSize, toDelChar));
+            var x = 0;
+            while (x < buf.length - 1) {
+                nb += buf[x];
+                x++;
+            }
+            _Console.buffer = nb;
+            _Console.currentXPosition = xVal - charWidth;
+            _DrawingContext.fillStyle = "#DFDBC3";
+            _DrawingContext.fillRect(_Console.currentXPosition, _Console.currentYPosition - _DefaultFontSize - 2, charWidth, offset);
         };
         Console.prototype.putText = function (text) {
             // My first inclination here was to write two functions: putChar() and putString().
@@ -118,12 +149,6 @@ var TSOS;
                 this.currentXPosition = this.currentXPosition + offset;
             }
         };
-        Console.prototype.deleteChar = function (value) {
-            //Take Character wanted to delete and move curser back and "erase" value.
-            _DrawingContext.delete(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, value);
-            var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, value);
-            this.currentXPosition = this.currentXPosition + offset;
-        };
         Console.prototype.advanceLine = function () {
             this.currentXPosition = 0;
             /*
@@ -135,8 +160,10 @@ var TSOS;
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
             if (this.currentYPosition >= _Canvas.height) {
-                var offset = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
-                var currentCanvas = _DrawingContext.getImageData(0, offset, _Canvas.width, _Canvas.height);
+                var currentDifference = _DefaultFontSize +
+                    _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                    _FontHeightMargin;
+                var currentCanvas = _DrawingContext.getImageData(0, currentDifference, _Canvas.width, _Canvas.height);
                 _DrawingContext.putImageData(currentCanvas, 0, 0);
                 this.currentYPosition = _Canvas.height - this.currentFontSize;
             }

@@ -77,10 +77,8 @@
       <label>
 	Status Bar
 	<br>
-	<textarea id="dateTime" name="dateTime" rows="2" cols="20"></textarea>
-	<textarea id="status" name="status" style="margin-left:275px;" rows="2" cols="20"></textarea>
-	<br>
-	<br>
+	<textarea readonly style="border:none; overflow:auto; outline:none; resize:none;" id="dateTime" name="dateTime" rows="2" cols="22"></textarea>
+	<textarea readonly style="border:none; overflow:auto; outline:none; resize:none;" id="status" name="status" rows="2" cols="22"></textarea>
       </label>
    </div>
    <div id="divLog" style="margin-left:520px;">

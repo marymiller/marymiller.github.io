@@ -45,19 +45,21 @@ module TSOS {
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
-                } else if (chr == String.fromCharCode(128)){
-		    if(_ExecutedNum > 0){
-		        this.buffer = _ExecutedValues[(_ExecutedNum-1)];
+                } else if (chr == String.fromCharCode(128)){ //Up Arrow
+		    if(_ExecutedNum > 0){ //Checks arraylist is not full
+		        this.deleteLine();//Clears the line
+			this.buffer = _ExecutedValues[(_ExecutedNum-1)];
 		        _ExecutedNum = _ExecutedNum - 1;
-		        this.putText(this.buffer);
+		        this.putText(this.buffer);//Puts next value
 		    }
-		}else if(chr == String.fromCharCode(129)) {
+		}else if(chr == String.fromCharCode(129)) { // Down Arrow
 		    if(_ExecutedNum < _ExecutedValues.length){
+		        this.deleteLine();
 		        this.buffer = _ExecutedValues[(_ExecutedNum)+1];
 		        _ExecutedNum = _ExecutedNum + 1;
 		        this.putText(this.buffer);
 		    }
-		} else if (chr == String.fromCharCode(9)){
+		} else if (chr == String.fromCharCode(9)){ //Tab over
 		    var foundCommand = new Array<string>();
 		    for (var x = 0; x < _OsShell.commandList.length; x++){
          	        if (_OsShell.commandList[x].command.search(this.buffer) == 0){
@@ -76,8 +78,10 @@ module TSOS {
 			this.putText(currentOptions);
 			this.advanceLine();
 			_OsShell.putPrompt();
+			this.putText(this.buffer);
 		    }
 		    else if(foundCommand.length == 1){
+		       this.deleteLine();
 		       this.buffer = foundCommand[0];
 		       this.putText(this.buffer);
 		    }
@@ -88,7 +92,10 @@ module TSOS {
 		       _OsShell.putPrompt();
 		       this.putText(this.buffer);
 		    }
-		}else {
+		} else if (chr == String.fromCharCode(8)){
+		  this.deleteChar();
+		}
+		else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
                     this.putText(chr);
@@ -98,8 +105,36 @@ module TSOS {
                 // TODO: Write a case for Ctrl-C.
             }
         }
+	
+	public deleteLine(): void {
+	    var currentLength = this.buffer.length;
+	    var x = 0;
+	    while (x < currentLength){
+	        this.deleteChar();
+		x++;
+	    } 
+	}
 
-        public putText(text): void {
+	public deleteChar(): void{
+          
+            var nb = "";
+	    var buf = _Console.buffer;	    
+            var toDelChar = buf[buf.length-1];
+	    var offset =  _DefaultFontSize + _FontHeightMargin + 3;
+	    var xVal = _Console.currentXPosition;          
+	    var charWidth = (CanvasTextFunctions.measure(_DefaultFontFamily,_DefaultFontSize,toDelChar));
+	    var x = 0;
+	    while(x < buf.length-1){
+	        nb+= buf[x];
+		x++;
+	    }	    
+            _Console.buffer = nb;
+	    _Console.currentXPosition = xVal - charWidth;
+            _DrawingContext.fillStyle= "#DFDBC3";
+            _DrawingContext.fillRect(_Console.currentXPosition, _Console.currentYPosition-_DefaultFontSize - 2, charWidth, offset); 
+
+        }
+	public putText(text): void {
             // My first inclination here was to write two functions: putChar() and putString().
             // Then I remembered that JavaScript is (sadly) untyped and it won't differentiate
             // between the two.  So rather than be like PHP and write two (or more) functions that
@@ -117,16 +152,6 @@ module TSOS {
             }
          }
 	 
-	 public deleteChar(value): void {
-	    //Take Character wanted to delete and move curser back and "erase" value.
-	    _DrawingContext.delete(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, value);
-                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, value);
-                this.currentXPosition = this.currentXPosition + offset;
-	    
-	 
-	 }
-
-
         public advanceLine(): void {
             this.currentXPosition = 0;
             /*
@@ -138,10 +163,12 @@ module TSOS {
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
 	    if(this.currentYPosition >= _Canvas.height){
-                var offset =_DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
-                var currentCanvas = _DrawingContext.getImageData(0,offset,_Canvas.width,_Canvas.height);
+
+                var currentDifference =_DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
+                var currentCanvas = _DrawingContext.getImageData(0, currentDifference ,_Canvas.width,_Canvas.height);
                 _DrawingContext.putImageData(currentCanvas, 0, 0);
                 this.currentYPosition = _Canvas.height - this.currentFontSize;
+
             }
         }
     }
