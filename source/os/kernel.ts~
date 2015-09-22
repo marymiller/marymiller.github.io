@@ -28,7 +28,7 @@ module TSOS {
             _KernelBuffers = new Array();         // Buffers... for the kernel.
             _KernelInputQueue = new Queue();      // Where device input lands before being processed out somewhere.
 	    _ExecutedValues = new Array<String>();
-	    _ExecutedNum = _ExecutedValues.length();
+	    _ExecutedNum = 0;
 
             // Initialize the console.
             _Console = new Console();          // The command line interface / console I/O device.
@@ -177,6 +177,7 @@ module TSOS {
 
         public krnTrapError(msg) {
             Control.hostLog("OS ERROR - TRAP: " + msg);
+	    _OsShell.shellCls("");
             _StdOut.putText("BE WARNED.. THIS IS A WARNING -- OS ERROR");
 
             (<HTMLInputElement> document.getElementById('divConsole')).style.background = '0000FF';

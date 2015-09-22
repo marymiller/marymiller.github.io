@@ -72,7 +72,7 @@ var TSOS;
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
                that it has to look for interrupts and process them if it finds any.                           */
             // Check for an interrupt, are any. Page 560
-            document.getElementById('dateTime').value = (new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString());
+            document.getElementById('dateTime').value = (new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()); //Add date Time status update
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
                 // TODO: Implement a priority queue based on the IRQ number/id to enforce interrupt priority.
@@ -158,6 +158,7 @@ var TSOS;
         };
         Kernel.prototype.krnTrapError = function (msg) {
             TSOS.Control.hostLog("OS ERROR - TRAP: " + msg);
+            _OsShell.shellCls("");
             _StdOut.putText("BE WARNED.. THIS IS A WARNING -- OS ERROR");
             document.getElementById('divConsole').style.background = '0000FF';
             this.krnShutdown();

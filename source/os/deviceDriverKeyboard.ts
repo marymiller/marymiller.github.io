@@ -43,7 +43,7 @@ module TSOS {
                 }
                 // TODO: Check for caps-lock and handle as shifted if so.
                 _KernelInputQueue.enqueue(chr);
-            }else if(isShifted){
+            }else if(isShifted){//Characters
 		if(keyCode == 48){
 		    chr = String.fromCharCode(41);	        
 		} else if (keyCode == 49){

@@ -91,15 +91,16 @@ module TSOS {
 	    }else if (((keyCode >= 48) && (keyCode <= 57)) ||   // digits
                         (keyCode == 32)                    ||   // space
                         (keyCode == 13)			   ||   // enter
+                        (keyCode == 9)			   ||   // tab
 			(keyCode == 8))                    {    // backspace
 		chr = String.fromCharCode(keyCode); 
 		console.log(chr);
 	        _KernelInputQueue.enqueue(chr);
-            }else if(keyCode == 38){
+            }else if(keyCode == 38){//Up Arrow			
 	        chr = String.fromCharCode(128); 
 		console.log(chr);
 	        _KernelInputQueue.enqueue(chr);
-	    }else if(keyCode == 40){
+	    }else if(keyCode == 40){//Down Arrow
 	    	chr = String.fromCharCode(129); 
 		console.log(chr);
 	        _KernelInputQueue.enqueue(chr);
