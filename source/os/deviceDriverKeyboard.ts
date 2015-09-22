@@ -93,8 +93,17 @@ module TSOS {
                         (keyCode == 13)			   ||   // enter
 			(keyCode == 8))                    {    // backspace
 		chr = String.fromCharCode(keyCode); 
+		console.log(chr);
 	        _KernelInputQueue.enqueue(chr);
-            }else if (((keyCode >= 186) && (keyCode <= 192)) ||
+            }else if(keyCode == 38){
+	        chr = String.fromCharCode(128); 
+		console.log(chr);
+	        _KernelInputQueue.enqueue(chr);
+	    }else if(keyCode == 40){
+	    	chr = String.fromCharCode(129); 
+		console.log(chr);
+	        _KernelInputQueue.enqueue(chr);
+	    }else if (((keyCode >= 186) && (keyCode <= 192)) ||
 		      ((keyCode >= 219) && (keyCode <= 222))){
 		if (keyCode == 186){
 		    chr = String.fromCharCode(59); 

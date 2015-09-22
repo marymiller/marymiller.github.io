@@ -145,6 +145,19 @@ module TSOS {
             return total;
         }
 	
+	public static delete(ctx, font, size, x, y, chara){
+	   var total = 0;
+	   var mag = size / 25.0;
+	   console.log(_Kernel._StdIn.buffer);
+
+	   ctx.save();
+	   var c = CanvasTextFunctions.letter(chara);
+	   ctx.clearRect((x-c.width), y, c.width, (_DefaultFontSize+_FontHeightMargin));
+	   ctx.stroke();
+	   
+            ctx.restore();
+
+	}
 
         public static draw(ctx, font, size, x, y, str) {
             var total = 0;

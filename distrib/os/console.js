@@ -39,9 +39,25 @@ var TSOS;
                 if (chr === String.fromCharCode(13)) {
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
+                    _ExecutedValues.push(this.buffer);
+                    _ExecutedNum = _ExecutedValues.length;
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
+                }
+                else if (chr == String.fromCharCode(128)) {
+                    if (_ExecutedNum > 0) {
+                        this.buffer = _ExecutedValues[(_ExecutedNum - 1)];
+                        _ExecutedNum = _ExecutedNum - 1;
+                        this.putText(this.buffer);
+                    }
+                }
+                else if (chr == String.fromCharCode(129)) {
+                    if (_ExecutedNum < _ExecutedValues.length) {
+                        this.buffer = _ExecutedValues[(_ExecutedNum) + 1];
+                        _ExecutedNum = _ExecutedNum + 1;
+                        this.putText(this.buffer);
+                    }
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -68,6 +84,12 @@ var TSOS;
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
                 this.currentXPosition = this.currentXPosition + offset;
             }
+        };
+        Console.prototype.deleteChar = function (value) {
+            //Take Character wanted to delete and move curser back and "erase" value.
+            _DrawingContext.delete(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, value);
+            var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, value);
+            this.currentXPosition = this.currentXPosition + offset;
         };
         Console.prototype.advanceLine = function () {
             this.currentXPosition = 0;

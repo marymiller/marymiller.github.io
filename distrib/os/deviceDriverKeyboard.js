@@ -117,6 +117,17 @@ var TSOS;
                 (keyCode == 13) ||
                 (keyCode == 8)) {
                 chr = String.fromCharCode(keyCode);
+                console.log(chr);
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 38) {
+                chr = String.fromCharCode(128);
+                console.log(chr);
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 40) {
+                chr = String.fromCharCode(129);
+                console.log(chr);
                 _KernelInputQueue.enqueue(chr);
             }
             else if (((keyCode >= 186) && (keyCode <= 192)) ||
