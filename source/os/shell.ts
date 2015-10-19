@@ -265,10 +265,10 @@ module TSOS {
 	     }
 	     x++;
 	   }
-	   if(valid == true){
-               _StdOut.putText("Input is Valid");      
+	   if(valid == true && inputText.length != 0){
+           _StdOut.putText("Input is valid");
 	   } else {
-               _StdOut.putText("Input is Invalid");
+           _StdOut.putText("Input is invalid");
 	   }
         }
 
@@ -322,7 +322,7 @@ module TSOS {
 	       	  statusString += (args[x] + " ");
 		  x++;
 	       }
-               (<HTMLInputElement> document.getElementById('status')).value = statusString;
+            (<HTMLInputElement> document.getElementById('status')).value = statusString;
 	    }
 	}
 
@@ -340,40 +340,40 @@ module TSOS {
                 var topic = args[0];
                 switch (topic) {
 		    case "ver":
-                        _StdOut.putText("ver - displays the current version data.");
-                        break;
-                    case "help":
-                        _StdOut.putText("help - this is the help command. seek help.");
-                        break;
-                    case "shutdown":
-                        _StdOut.putText("shutdown - Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
-                        break;
-                    case "cls":
-                        _StdOut.putText("cls - Clears the screen and resets the cursor position.");
-                        break;
-                    case "man":
-                        _StdOut.putText("man <topic> - Displays the MANual page for <topic>.");
-                        break;
-                    case "trace":
-                        _StdOut.putText("trace <on | off> - Turns the OS trace on or off.");
-                        break;
-                    case "rot13":
-                        _StdOut.putText("rot13 <string> - Does rot13 obfuscation on <string>.");
-                        break;
-                    case "prompt":
-                        _StdOut.putText("prompt <string> - Sets the prompt.");
-                        break;
-                    case "date":
-                        _StdOut.putText("date - displays the current date and time.");
-                        break;
-                    case "whereami":
-                        _StdOut.putText("whereami- displays the users current location.");
-                        break;
+                _StdOut.putText("ver - displays the current version data.");
+                break;
+            case "help":
+                _StdOut.putText("help - this is the help command. seek help.");
+                break;
+            case "shutdown":
+                _StdOut.putText("shutdown - Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
+                break;
+            case "cls":
+                _StdOut.putText("cls - Clears the screen and resets the cursor position.");
+                break;
+            case "man":
+                _StdOut.putText("man <topic> - Displays the MANual page for <topic>.");
+                break;
+            case "trace":
+                _StdOut.putText("trace <on | off> - Turns the OS trace on or off.");
+                break;
+            case "rot13":
+                _StdOut.putText("rot13 <string> - Does rot13 obfuscation on <string>.");
+                break;
+            case "prompt":
+                _StdOut.putText("prompt <string> - Sets the prompt.");
+                break;
+            case "date":
+                _StdOut.putText("date - displays the current date and time.");
+                break;
+            case "whereami":
+                _StdOut.putText("whereami- displays the users current location.");
+                break;
 		    case "friend":
-                        _StdOut.putText("<Your Name> - Displays if you're a friend.");
-			break;
-                    default:
-                        _StdOut.putText("No manual entry for " + args[0] + ".");
+                _StdOut.putText("<Your Name> - Displays if you're a friend.");
+			    break;
+            default:
+                _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
             } else {
                 _StdOut.putText("Usage: man <topic>  Please supply a topic.");

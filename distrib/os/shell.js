@@ -204,11 +204,11 @@ var TSOS;
                 }
                 x++;
             }
-            if (valid == true) {
-                _StdOut.putText("Input is Valid");
+            if (valid == true && inputText.length != 0) {
+                _StdOut.putText("Input is valid");
             }
             else {
-                _StdOut.putText("Input is Invalid");
+                _StdOut.putText("Input is invalid");
             }
         };
         Shell.prototype.shellWhereAmI = function () {
