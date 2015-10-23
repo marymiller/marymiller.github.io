@@ -31,6 +31,25 @@ var _OSclock: number = 0;  // Page 23.
 
 var _Mode: number = 0;     // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
 
+var _Memory: any = null;
+var _MemTable: any = null;
+var _MemoryManager: any = null;
+
+
+
+// loading and running programs
+var _PID: number = 0;
+var _CurrBlockOfMem: number = -1;
+var _CurrPCB: any = null;
+var _SingleStepOn: boolean = false;
+
+
+var _Assembly ="";
+var _OSclock: number = 0;
+
+var _SchedulerType: string = "rr";
+var _CycleCounter: number = null;
+
 var _Canvas: HTMLCanvasElement;         // Initialized in Control.hostInit().
 var _DrawingContext: any; // = _Canvas.getContext("2d");  // Assigned here for type safety, but re-initialized in Control.hostInit() for OCD and logic.
 var _DefaultFontFamily: string = "sans";        // Ignored, I think. The was just a place-holder in 2008, but the HTML canvas may have use for it.

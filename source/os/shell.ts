@@ -3,7 +3,6 @@
 ///<reference path="shellCommand.ts" />
 ///<reference path="userCommand.ts" />
 
-
 /* ------------
    Shell.ts
 
@@ -47,6 +46,12 @@ module TSOS {
             sc = new ShellCommand(this.shellShutdown,
                                   "shutdown",
                                   "- Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
+            this.commandList[this.commandList.length] = sc;
+
+            // run
+            sc = new ShellCommand(this.shellRun,
+                "run",
+                "<PID> - run process .");
             this.commandList[this.commandList.length] = sc;
 
             // cls
@@ -253,23 +258,49 @@ module TSOS {
             _StdOut.putText(APP_NAME + " version " + APP_VERSION);
         }
 
+        public shellRun(args) {
+            if(args.length > 0){
+                if(_Memory.isEmpty()) {
+                    _StdOut.putText('Nothing is in memory. Please try and load program');
+                }else if(args[0] == _CurrPCB.PID){
+                    var programData = "";
+                    _CPU.resetCPUElements();
+                    _CycleCounter = 0;
+                    _CPU.isExecuting = true;
+                }else {
+                    _StdOut.putText('Please input correct PID');
+                }
+            }else{
+                _StdOut.putText("Input PID");
+            }
+        }
+
         public shellLoad(args) {
-           var inputText =  (<HTMLInputElement> document.getElementById('taProgramInput')).value;
-	   inputText = inputText.toLowerCase();
-	   var x = 0;
-	   var valid = true;
-	   while(x < inputText.length){
-	     var val = inputText.charAt(x);
-	     if(val != 'a' && val != 'b' && val != 'c' && val != 'd' && val != 'e' && val != 'f' && val != '0' && val != '1' && val != '2' && val != '3' && val != '4' && val != '5' && val != '6' && val != '7' && val != '8' && val != '9' && val != ' '){
-	          valid = false;
-	     }
-	     x++;
-	   }
-	   if(valid == true && inputText.length != 0){
-           _StdOut.putText("Input is valid");
-	   } else {
-           _StdOut.putText("Input is invalid");
-	   }
+           var inputText =  (<HTMLInputElement> document.getElementById('taProgramInput')).value.trim();
+           inputText = inputText.toLowerCase();
+           var x = 0;
+	       var valid = true;
+	       while(x < inputText.length){
+               var val = inputText.charAt(x);
+	           if(val != 'a' && val != 'b' && val != 'c' && val != 'd' && val != 'e' && val != 'f' && val != '0' && val != '1' && val != '2' && val != '3' && val != '4' && val != '5' && val != '6' && val != '7' && val != '8' && val != '9' && val != ' '){
+                   valid = false;
+	           }
+	           x++;
+	       }
+	       if(valid == true && inputText.length != 0){
+               var currentInputText = inputText.replace( /\n/g, " " ).split( " " );
+               console.log(currentInputText);
+
+
+               _CurrPCB = new PCB();
+               _MemoryManager.fillMemoryWithProgram(currentInputText);
+
+               _StdOut.putText("Successfully loaded program. ProcessID: " + _CurrPCB.PID);
+               _StdOut.advanceLine();
+               _CPU.clearPreviousProgram();
+	       } else {
+               _StdOut.putText("Input is invalid");
+	       }
         }
 
         public shellWhereAmI() {
@@ -314,17 +345,17 @@ module TSOS {
             // TODO: Stop the final prompt from being displayed.  If possible.  Not a high priority.  (Damn OCD!)
         }
 	
-	public shellStatus(args){
-	    if(args.length != 0){
-	       var x = 0;
-	       var statusString = '';
-	       while (x < args.length){
-	       	  statusString += (args[x] + " ");
-		  x++;
-	       }
-            (<HTMLInputElement> document.getElementById('status')).value = statusString;
-	    }
-	}
+        public shellStatus(args){
+            if(args.length != 0){
+               var x = 0;
+               var statusString = '';
+               while (x < args.length){
+                  statusString += (args[x] + " ");
+              x++;
+               }
+                (<HTMLInputElement> document.getElementById('status')).value = statusString;
+            }
+        }
 
         public shellCls(args) {
             _StdOut.clearScreen();

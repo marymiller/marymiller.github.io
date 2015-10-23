@@ -130,7 +130,7 @@ module TSOS {
 	    }	    
             _Console.buffer = nb;
 	    _Console.currentXPosition = xVal - charWidth;
-            _DrawingContext.fillStyle= "#DFDBC3";
+            _DrawingContext.fillStyle= "#FFFFFF";
             _DrawingContext.fillRect(_Console.currentXPosition, _Console.currentYPosition-_DefaultFontSize - 2, charWidth, offset); 
 
         }
@@ -143,14 +143,22 @@ module TSOS {
             //
             // UPDATE: Even though we are now working in TypeScript, char and string remain undistinguished.
             //         Consider fixing that.
+        var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
+        var prompt = _DrawingContext.measureText(this.currentFont, this.currentFontSize, ">");
+		if((this.currentXPosition+offset+prompt) < _Canvas.width) {
             if (text !== "") {
                 // Draw the text at the current X and Y coordinates.
                 _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
                 // Move the current X position
-                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
                 this.currentXPosition = this.currentXPosition + offset;
             }
-         }
+        }else{
+            this.advanceLine();
+            _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
+            // Move the current X position
+            this.currentXPosition = this.currentXPosition + offset;
+        }
+	}
 	 
         public advanceLine(): void {
             this.currentXPosition = 0;
@@ -162,7 +170,7 @@ module TSOS {
             this.currentYPosition += _DefaultFontSize + 
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
-	    if(this.currentYPosition >= _Canvas.height){
+	    	if(this.currentYPosition >= _Canvas.height){
 
                 var currentDifference =_DefaultFontSize + 
 		    		       _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + 

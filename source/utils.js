@@ -1,4 +1,3 @@
-///<reference path="globals.ts" />
 /* --------
    Utils.ts
 
@@ -45,13 +44,50 @@ var TSOS;
             }
             return retVal;
         };
-        Utils.hexToDec = function (hexStr) {
+        Utils.hexStrToDecNum = function (hexStr) {
             return parseInt(hexStr, 16);
         };
-        Utils.decToHex = function (decNum) {
+        Utils.decNumToHexStr = function (decNum) {
             return decNum.toString(16);
+        };
+        Utils.stringToHex = function (string) {
+            var hexString = "";
+            for (var i = 0; i < string.length; i++) {
+                hexString += string.charCodeAt(i).toString(16);
+            }
+            return hexString;
+        };
+        Utils.hexToString = function (hexx) {
+            var hex = hexx.toString(); //force conversion
+            var str = '';
+            for (var i = 0; i < hex.length; i += 2)
+                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            return str;
+        };
+        Utils.isNaNOverride = function (val) {
+            return (val[1] === "D" || val === "00" || isNaN(val));
+        };
+        Utils.getPrettySchedulerType = function () {
+            if (_SchedulerType === "rr") {
+                return "Round Robin";
+            }
+            else if (_SchedulerType === "fcfs") {
+                return "First Come First Serve";
+            }
+            else if (_SchedulerType === "priority") {
+                return "Priority";
+            }
+        };
+        Utils.isInteger = function (val) {
+            if (val % 1 === 0 && isNaN(val) === false) {
+                return true;
+            }
+            else {
+                return false;
+            }
         };
         return Utils;
     })();
     TSOS.Utils = Utils;
 })(TSOS || (TSOS = {}));
+//# sourceMappingURL=utils.js.map

@@ -1,3 +1,4 @@
+///<reference path="globals.ts" />
 /* --------
    Utils.ts
 
@@ -42,6 +43,13 @@ module TSOS {
                 }
             }
             return retVal;
+        }
+        public static hexToDec(hexStr): number {
+            return parseInt(hexStr, 16);
+        }
+
+        public static decToHex(decNum): string {
+            return decNum.toString(16);
         }
     }
 }

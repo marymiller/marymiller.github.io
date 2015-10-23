@@ -34,6 +34,9 @@ var TSOS;
             // shutdown
             sc = new TSOS.ShellCommand(this.shellShutdown, "shutdown", "- Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
             this.commandList[this.commandList.length] = sc;
+            // run
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "<PID> - run process .");
+            this.commandList[this.commandList.length] = sc;
             // cls
             sc = new TSOS.ShellCommand(this.shellCls, "cls", "- Clears the screen and resets the cursor position.");
             this.commandList[this.commandList.length] = sc;
@@ -192,8 +195,27 @@ var TSOS;
         Shell.prototype.shellVer = function (args) {
             _StdOut.putText(APP_NAME + " version " + APP_VERSION);
         };
+        Shell.prototype.shellRun = function (args) {
+            if (args.length > 0) {
+                if (_Memory.isEmpty()) {
+                    _StdOut.putText('Nothing is in memory. Please try and load program');
+                }
+                else if (args[0] == _CurrPCB.PID) {
+                    var programData = "";
+                    _CPU.resetCPUElements();
+                    _CycleCounter = 0;
+                    _CPU.isExecuting = true;
+                }
+                else {
+                    _StdOut.putText('Please input correct PID');
+                }
+            }
+            else {
+                _StdOut.putText("Input PID");
+            }
+        };
         Shell.prototype.shellLoad = function (args) {
-            var inputText = document.getElementById('taProgramInput').value;
+            var inputText = document.getElementById('taProgramInput').value.trim();
             inputText = inputText.toLowerCase();
             var x = 0;
             var valid = true;
@@ -205,7 +227,13 @@ var TSOS;
                 x++;
             }
             if (valid == true && inputText.length != 0) {
-                _StdOut.putText("Input is valid");
+                var currentInputText = inputText.replace(/\n/g, " ").split(" ");
+                console.log(currentInputText);
+                _CurrPCB = new TSOS.PCB();
+                _MemoryManager.fillMemoryWithProgram(currentInputText);
+                _StdOut.putText("Successfully loaded program. ProcessID: " + _CurrPCB.PID);
+                _StdOut.advanceLine();
+                _CPU.clearPreviousProgram();
             }
             else {
                 _StdOut.putText("Input is invalid");
